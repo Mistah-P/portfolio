@@ -1,0 +1,12 @@
+{
+  "name": "mistah-progmmer-portfolio",
+  "version": "1.0.0",
+  "description": "Portfolio website for Mistah Progmmer",
+  "scripts": {
+    "start": "serve",
+    "build": "echo 'No build step required'"
+  },
+  "dependencies": {
+    "serve": "^14.2.0"
+  }
+} 
