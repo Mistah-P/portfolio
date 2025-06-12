@@ -1,0 +1,699 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>E-commerce Store Solution</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap');
+
+        :root {
+            --primary-color: #fb8500;
+            --secondary-color: #ef233c;
+            --accent-color: #ffb703;
+            --light-color: #f8f9fa;
+            --dark-color: #2b2d42;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #1a1a2e, #16213e);
+            color: var(--light-color);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        header {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 2rem 0;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--accent-color);
+            text-decoration: none;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+        }
+
+        .nav-link {
+            color: var(--light-color);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+
+        .nav-link:hover {
+            color: var(--accent-color);
+        }
+
+        .hero {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: flex-start;
+            height: calc(100vh - 100px);
+            position: relative;
+            z-index: 2;
+        }
+
+        .hero-content {
+            max-width: 600px;
+            animation: fadeIn 1s ease-out;
+        }
+
+        .hero-title {
+            font-size: 4rem;
+            line-height: 1.2;
+            margin-bottom: 1.5rem;
+            position: relative;
+        }
+
+        .hero-title span {
+            color: var(--accent-color);
+        }
+
+        .hero-description {
+            font-size: 1.2rem;
+            margin-bottom: 2.5rem;
+            color: #ccc;
+            line-height: 1.6;
+        }
+
+        .cta-buttons {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .btn {
+            padding: 1rem 2rem;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .btn-primary {
+            background: linear-gradient(to right, var(--primary-color), var(--secondary-color));
+            color: white;
+            border: none;
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+        }
+
+        .btn-primary::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: all 0.5s ease;
+            z-index: -1;
+        }
+
+        .btn-primary:hover::before {
+            left: 100%;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(251, 133, 0, 0.4);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: var(--light-color);
+            border: 1px solid var(--accent-color);
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255, 183, 3, 0.1);
+            transform: translateY(-5px);
+        }
+
+        .btn i {
+            margin-left: 0.5rem;
+        }
+
+        .store-preview {
+            position: absolute;
+            right: -5%;
+            bottom: -10%;
+            width: 65%;
+            z-index: 1;
+            transform: perspective(1000px) rotateY(-10deg) rotateX(5deg);
+            transition: all 0.5s ease;
+            animation: float 6s ease-in-out infinite;
+        }
+
+        .store-preview-content {
+            width: 100%;
+            height: 350px;
+            border-radius: 10px;
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5);
+            background: linear-gradient(135deg, #2a2a5a, #1a1a3e);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .preview-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+
+        .preview-title {
+            font-size: 1.2rem;
+            color: var(--accent-color);
+        }
+
+        .preview-nav {
+            display: flex;
+            gap: 10px;
+        }
+
+        .preview-nav-item {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .preview-nav-item:first-child {
+            background: var(--accent-color);
+        }
+
+        .preview-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+        }
+
+        .preview-item {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 8px;
+            padding: 10px;
+            height: 120px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .preview-item-img {
+            height: 60px;
+            background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+            border-radius: 5px;
+            margin-bottom: 10px;
+        }
+
+        .preview-item-title {
+            font-size: 0.8rem;
+            margin-bottom: 5px;
+        }
+
+        .preview-item-price {
+            font-size: 0.9rem;
+            color: var(--accent-color);
+            font-weight: bold;
+        }
+
+        .floating-elements {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .floating-element {
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(251, 133, 0, 0.2);
+            box-shadow: 0 0 20px rgba(251, 133, 0, 0.3);
+            animation: floatElement var(--duration) ease-in-out infinite;
+            animation-delay: var(--delay);
+        }
+
+        .product-card {
+            position: absolute;
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border-radius: 10px;
+            padding: 1rem;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+            width: 180px;
+            animation: fadeIn 1s ease-out forwards, float 5s ease-in-out infinite;
+        }
+
+        .product-card-1 {
+            top: 20%;
+            left: 10%;
+            animation-delay: 0.5s;
+        }
+
+        .product-card-2 {
+            bottom: 25%;
+            left: 20%;
+            animation-delay: 1s;
+        }
+
+        .product-img {
+            width: 100%;
+            height: 100px;
+            border-radius: 5px;
+            margin-bottom: 0.5rem;
+            background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+            position: relative;
+            overflow: hidden;
+        }
+
+        .product-img::after {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 30%;
+            background: rgba(255, 255, 255, 0.1);
+            bottom: 0;
+            left: 0;
+            border-radius: 0 0 5px 5px;
+        }
+
+        .product-title {
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-bottom: 0.3rem;
+        }
+
+        .product-price {
+            font-size: 1rem;
+            color: var(--accent-color);
+            font-weight: 700;
+        }
+
+        .features {
+            padding: 5rem 0;
+        }
+
+        .features-title {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 3rem;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .feature-card {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            padding: 2rem;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+        }
+
+        .feature-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+            border-color: rgba(255, 183, 3, 0.3);
+        }
+
+        .feature-icon {
+            font-size: 2.5rem;
+            color: var(--accent-color);
+            margin-bottom: 1.5rem;
+        }
+
+        .feature-title {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .feature-description {
+            color: #ccc;
+            line-height: 1.6;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes float {
+            0%, 100% {
+                transform: perspective(1000px) rotateY(-10deg) rotateX(5deg) translateY(0);
+            }
+            50% {
+                transform: perspective(1000px) rotateY(-8deg) rotateX(3deg) translateY(-20px);
+            }
+        }
+
+        @keyframes floatElement {
+            0%, 100% {
+                transform: translateY(0) translateX(0);
+            }
+            25% {
+                transform: translateY(-20px) translateX(10px);
+            }
+            50% {
+                transform: translateY(-10px) translateX(-15px);
+            }
+            75% {
+                transform: translateY(-25px) translateX(15px);
+            }
+        }
+
+        @media screen and (max-width: 768px) {
+            .hero {
+                height: auto;
+                padding: 3rem 0;
+            }
+
+            .hero-title {
+                font-size: 2.5rem;
+            }
+
+            .store-preview {
+                position: relative;
+                right: auto;
+                bottom: auto;
+                width: 100%;
+                margin-top: 3rem;
+                transform: none;
+                animation: none;
+            }
+
+            .product-card {
+                display: none;
+            }
+
+            .nav-links {
+                display: none;
+            }
+        }
+
+        .back-home {
+            position: fixed;
+            bottom: 2rem;
+            left: 2rem;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 0.5rem 1rem;
+            border-radius: 30px;
+            color: var(--light-color);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: all 0.3s ease;
+            z-index: 100;
+        }
+
+        .back-home:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateY(-3px);
+        }
+
+        /* Glow effect */
+        .glow {
+            position: absolute;
+            width: 600px;
+            height: 600px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(251, 133, 0, 0.2) 0%, transparent 70%);
+            top: 50%;
+            left: 30%;
+            transform: translate(-50%, -50%);
+            z-index: 0;
+            opacity: 0.5;
+            filter: blur(50px);
+            animation: pulse 8s infinite alternate;
+        }
+
+        @keyframes pulse {
+            0% {
+                opacity: 0.3;
+                transform: translate(-50%, -50%) scale(0.8);
+            }
+            100% {
+                opacity: 0.7;
+                transform: translate(-50%, -50%) scale(1.2);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="floating-elements" id="floating-elements"></div>
+    <div class="glow"></div>
+
+    <header>
+        <div class="container">
+            <nav class="navbar">
+                <a href="#" class="logo">ShopEase</a>
+                <div class="nav-links">
+                    <a href="#" class="nav-link">Features</a>
+                    <a href="#" class="nav-link">Pricing</a>
+                    <a href="#" class="nav-link">Showcase</a>
+                    <a href="#" class="nav-link">Contact</a>
+                </div>
+            </nav>
+
+            <div class="hero">
+                <div class="hero-content">
+                    <h1 class="hero-title">Build Your <span>Online Store</span> with Powerful E-commerce Solution</h1>
+                    <p class="hero-description">Create, manage, and scale your online business with our comprehensive e-commerce platform. Designed for entrepreneurs and businesses of all sizes.</p>
+                    <div class="cta-buttons">
+                        <a href="#" class="btn btn-primary">Start Selling <i class="fas fa-shopping-cart"></i></a>
+                        <a href="#" class="btn btn-secondary">View Demo</a>
+                    </div>
+                </div>
+
+                <div class="store-preview">
+                    <div class="store-preview-content">
+                        <div class="preview-header">
+                            <div class="preview-title">Online Store</div>
+                            <div class="preview-nav">
+                                <div class="preview-nav-item"></div>
+                                <div class="preview-nav-item"></div>
+                                <div class="preview-nav-item"></div>
+                            </div>
+                        </div>
+                        <div class="preview-grid">
+                            <div class="preview-item">
+                                <div class="preview-item-img"></div>
+                                <div class="preview-item-title">Premium Headphones</div>
+                                <div class="preview-item-price">$129.99</div>
+                            </div>
+                            <div class="preview-item">
+                                <div class="preview-item-img"></div>
+                                <div class="preview-item-title">Smart Watch</div>
+                                <div class="preview-item-price">$199.99</div>
+                            </div>
+                            <div class="preview-item">
+                                <div class="preview-item-img"></div>
+                                <div class="preview-item-title">Wireless Earbuds</div>
+                                <div class="preview-item-price">$89.99</div>
+                            </div>
+                            <div class="preview-item">
+                                <div class="preview-item-img"></div>
+                                <div class="preview-item-title">Bluetooth Speaker</div>
+                                <div class="preview-item-price">$149.99</div>
+                            </div>
+                            <div class="preview-item">
+                                <div class="preview-item-img"></div>
+                                <div class="preview-item-title">Fitness Tracker</div>
+                                <div class="preview-item-price">$79.99</div>
+                            </div>
+                            <div class="preview-item">
+                                <div class="preview-item-img"></div>
+                                <div class="preview-item-title">Smart Home Hub</div>
+                                <div class="preview-item-price">$249.99</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="product-card product-card-1">
+                    <div class="product-img"></div>
+                    <h3 class="product-title">Wireless Headphones</h3>
+                    <p class="product-price">$129.99</p>
+                </div>
+
+                <div class="product-card product-card-2">
+                    <div class="product-img"></div>
+                    <h3 class="product-title">Smart Watch</h3>
+                    <p class="product-price">$199.99</p>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <section class="features">
+        <div class="container">
+            <h2 class="features-title">Powerful E-commerce Features</h2>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-shopping-bag"></i>
+                    </div>
+                    <h3 class="feature-title">Product Management</h3>
+                    <p class="feature-description">Easily add, edit, and organize your products with our intuitive management system. Support for multiple variants, categories, and tags.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-credit-card"></i>
+                    </div>
+                    <h3 class="feature-title">Secure Payments</h3>
+                    <p class="feature-description">Accept payments from multiple providers with our secure payment gateway integration. Support for credit cards, PayPal, and more.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    <h3 class="feature-title">Analytics & Reports</h3>
+                    <p class="feature-description">Track your store's performance with detailed analytics and reports. Monitor sales, customer behavior, and inventory levels.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <a href="index.html" class="back-home">
+        <i class="fas fa-home"></i>
+        Back to Home
+    </a>
+
+    <script>
+        // Create floating elements
+        const floatingContainer = document.getElementById('floating-elements');
+        const elementCount = 15;
+        
+        for (let i = 0; i < elementCount; i++) {
+            const element = document.createElement('div');
+            element.className = 'floating-element';
+            
+            // Random size between 5 and 30px
+            const size = Math.random() * 25 + 5;
+            
+            // Random position
+            const posX = Math.random() * 100;
+            const posY = Math.random() * 100;
+            
+            // Random opacity
+            const opacity = Math.random() * 0.3 + 0.05;
+            
+            // Random animation duration between 15 and 30 seconds
+            const duration = Math.random() * 15 + 15;
+            const delay = Math.random() * 5;
+            
+            // Apply styles
+            element.style.cssText = `
+                width: ${size}px;
+                height: ${size}px;
+                left: ${posX}%;
+                top: ${posY}%;
+                opacity: ${opacity};
+                --duration: ${duration}s;
+                --delay: ${delay}s;
+            `;
+            
+            floatingContainer.appendChild(element);
+        }
+
+        // 3D effect on store preview
+        const storePreview = document.querySelector('.store-preview');
+        
+        document.addEventListener('mousemove', e => {
+            if (window.innerWidth <= 768) return;
+            
+            const mouseX = e.clientX / window.innerWidth;
+            const mouseY = e.clientY / window.innerHeight;
+            
+            const rotateY = (mouseX - 0.5) * 20;
+            const rotateX = (0.5 - mouseY) * 10;
+            
+            storePreview.style.transform = `perspective(1000px) rotateY(${rotateY}deg) rotateX(${rotateX}deg)`;
+        });
+        
+        document.addEventListener('mouseleave', () => {
+            storePreview.style.transform = 'perspective(1000px) rotateY(-10deg) rotateX(5deg)';
+            storePreview.style.transition = 'transform 0.5s ease';
+        });
+
+        // Animate feature cards on scroll
+        const featureCards = document.querySelectorAll('.feature-card');
+        
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+        
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+        
+        featureCards.forEach((card, index) => {
+            card.style.opacity = '0';
+            card.style.transform = 'translateY(50px)';
+            card.style.transition = `all 0.5s ease ${index * 0.2}s`;
+            observer.observe(card);
+        });
+    </script>
+</body>
+</html> 

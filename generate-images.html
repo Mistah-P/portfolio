@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Generate Placeholder Images</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            line-height: 1.6;
+        }
+        h1 {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        button {
+            display: block;
+            margin: 20px auto;
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        .preview-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 20px;
+            margin-top: 30px;
+        }
+        .preview-item {
+            border: 1px solid #ddd;
+            padding: 10px;
+            border-radius: 4px;
+        }
+        .preview-item img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+        .preview-item p {
+            margin: 10px 0 0;
+            text-align: center;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Generate Placeholder Images</h1>
+    
+    <p>Click the button below to generate placeholder images for your portfolio website. The images will be downloaded to your computer. After downloading, move them to the <code>assets</code> folder of your portfolio.</p>
+    
+    <button id="generate-btn">Generate All Images</button>
+    
+    <div class="preview-container" id="preview"></div>
+    
+    <script>
+        // Configuration
+        const images = [
+            { name: 'profile.jpg', width: 600, height: 800, color: '#333333', text: 'Profile Photo' },
+            { name: 'student.png', width: 800, height: 600, color: '#FF5733', text: 'Project 1' },
+            { name: 'ecommerce.png', width: 800, height: 600, color: '#33FF57', text: 'Project 2' },
+            { name: 'attencedance.png', width: 800, height: 600, color: '#3357FF', text: 'Project 3' },
+            { name: 'face.png', width: 800, height: 600, color: '#F3FF33', text: 'Project 4' },
+            { name: 'blog1.jpg', width: 800, height: 600, color: '#FF33A8', text: 'Blog Post 1' },
+            { name: 'blog2.jpg', width: 800, height: 600, color: '#33FFF6', text: 'Blog Post 2' },
+            { name: 'blog3.jpg', width: 800, height: 600, color: '#A833FF', text: 'Blog Post 3' }
+        ];
+
+        function createCanvas(width, height) {
+            const canvas = document.createElement('canvas');
+            canvas.width = width;
+            canvas.height = height;
+            return canvas;
+        }
+
+        function downloadImage(canvas, filename) {
+            const link = document.createElement('a');
+            link.download = filename;
+            link.href = canvas.toDataURL('image/jpeg', 0.8);
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+
+        function generateImage(img) {
+            const canvas = createCanvas(img.width, img.height);
+            const ctx = canvas.getContext('2d');
+            
+            // Fill background
+            ctx.fillStyle = img.color;
+            ctx.fillRect(0, 0, img.width, img.height);
+            
+            // Add grid pattern
+            ctx.strokeStyle = 'rgba(255, 255, 255, 0.2)';
+            ctx.lineWidth = 1;
+            
+            // Vertical lines
+            for (let x = 0; x < img.width; x += 20) {
+                ctx.beginPath();
+                ctx.moveTo(x, 0);
+                ctx.lineTo(x, img.height);
+                ctx.stroke();
+            }
+            
+            // Horizontal lines
+            for (let y = 0; y < img.height; y += 20) {
+                ctx.beginPath();
+                ctx.moveTo(0, y);
+                ctx.lineTo(img.width, y);
+                ctx.stroke();
+            }
+            
+            // Add text
+            ctx.fillStyle = 'rgba(255, 255, 255, 0.8)';
+            ctx.font = 'bold 32px Arial';
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.fillText(img.text, img.width / 2, img.height / 2);
+            
+            // Add dimensions text
+            ctx.font = '16px Arial';
+            ctx.fillText(`${img.width}x${img.height}`, img.width / 2, img.height / 2 + 40);
+            
+            return canvas;
+        }
+
+        function createPreviews() {
+            const previewContainer = document.getElementById('preview');
+            
+            images.forEach(img => {
+                const canvas = generateImage(img);
+                
+                const previewItem = document.createElement('div');
+                previewItem.className = 'preview-item';
+                
+                const previewImg = document.createElement('img');
+                previewImg.src = canvas.toDataURL('image/jpeg');
+                
+                const previewText = document.createElement('p');
+                previewText.textContent = `${img.name} (${img.width}x${img.height})`;
+                
+                previewItem.appendChild(previewImg);
+                previewItem.appendChild(previewText);
+                previewContainer.appendChild(previewItem);
+            });
+        }
+
+        function generateAllImages() {
+            images.forEach(img => {
+                const canvas = generateImage(img);
+                downloadImage(canvas, img.name);
+            });
+            
+            alert('All images have been generated and downloaded. Please move them to the assets folder of your portfolio.');
+        }
+
+        // Create previews on page load
+        document.addEventListener('DOMContentLoaded', createPreviews);
+        
+        // Generate images on button click
+        document.getElementById('generate-btn').addEventListener('click', generateAllImages);
+    </script>
+</body>
+</html> 
