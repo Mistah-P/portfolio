@@ -292,7 +292,7 @@ nav a:hover::after {
 
 .badge-design-strategy {
     bottom: 70%;
-    left: 15%;
+    left: 30%;
     background-color: #61DAFB;
     color: #000000;
     animation-delay: 1.2s;
@@ -326,7 +326,7 @@ nav a:hover::after {
 
 .badge-branding {
     bottom: 55%;
-    right: 25%;
+    right: 10%;
     background-color: #339933;
     color: #ffffff;
     animation-delay: 2s;
